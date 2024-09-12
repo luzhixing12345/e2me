@@ -3,12 +3,13 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 import os
-import smtplib
+
 from typing import Dict
 import time
 import getpass
 import socket
 import platform
+from .email_server import get_email_server, EmailServer
 
 
 def parse_content(text: str):
@@ -31,7 +32,8 @@ def parse_content(text: str):
 def send_email(config: Dict):
     # 发送者和接收者邮箱信息
     email_addr = config["email"]["email"]
-    password = config["email"]["passwd"]
+    passwd = config["email"]["passwd"]
+    email_server: EmailServer = get_email_server(email_addr, passwd)
 
     # 创建邮件对象
     msg = MIMEMultipart()
@@ -56,17 +58,5 @@ def send_email(config: Dict):
                     msg.attach(part)
             else:
                 print(f"File not found: {file_path}")
-
-    # 连接到 SMTP 服务器并发送邮件
-    smpt_server = config["email"]["smtp_server"]
-    smpt_port = config["email"]["port"]
-    try:
-        with smtplib.SMTP(smpt_server, smpt_port) as server:  # 使用 SMTP 服务器,例如 smtp.gmail.com
-            server.starttls()
-            server.login(email_addr, password)
-            server.send_message(msg)
-            print(f"Email sent successfully")
-    except Exception as e:
-        print(f"Error sending email: {e}")
-
+    email_server.send(msg)
     return True

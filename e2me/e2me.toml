@@ -1,0 +1,14 @@
+# https://github.com/luzhixing12345/e2me
+
+[email]
+email = "your_email@example.com"
+passwd = "your_password"
+
+# pop3_email_num = 5  # 接收邮件数量
+
+[content]
+subject = "程序运行结束"
+body = "[<DATE> | <TIME>] [<KERNEL>] <USER>:<HOSTNAME> "
+
+# [file]
+# file_path = ["result.log"]
