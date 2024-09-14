@@ -52,6 +52,11 @@ def main():
 
         return
 
+    if args.cmd is None:
+        # print help message
+        parser.print_help()
+        return
+
     if args.cmd == "run":
         send_email(config)
     elif args.cmd == "get":
