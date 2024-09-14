@@ -6,6 +6,8 @@
 pip install e2me
 ```
 
+视频介绍: [【e2me】不知道什么时候跑完程序?发一封邮件吧](https://www.bilibili.com/video/BV1TstPenECo)
+
 ## 快速开始
 
 需要在运行程序的服务器端编写一个配置文件, 可以通过 e2me init 自动生成 `e2me.toml`, 如下所示 
@@ -48,6 +50,17 @@ subject 为邮件标题, body 为邮件正文内容, 默认提供了 5 个基本
 file_path = ["result.log"]
 ```
 
+您可以编写一个执行脚本, 并在最后一行执行
+
+```bash
+#!/bin/bash
+python main.py
+lua 1.py
+./myprogram
+
+e2me run
+```
+
 对于 python 程序您可以直接使用该库发送邮件
 
 ```python
@@ -60,15 +73,18 @@ def main():
     e2me.run()
 ```
 
-或者您可以编写一个执行脚本, 最后执行
+或者对于其他语言, 调用 execve 执行 e2me run
 
-```bash
-#!/bin/bash
-python main.py
-lua 1.py
-./myprogram
+```c
+#include <stdio.h>
+#include <unistd.h>
+int main(int argc, char **argv) {
 
-e2me run
+    char *args[3] = {"e2me","run", NULL};
+    // whereis e2me 找到绝对路径
+    execve("/home/kamilu/anaconda3/bin/e2me", args, NULL);
+    return 0;
+}
 ```
 
 ### 接收邮件
@@ -94,7 +110,7 @@ e2me get
 # POP3 pop.gmail.com  995
 # -------------------------------
 # 163/qq: password 为授权码
-# gmail: password 为邮箱密码
+# gmail: password 为 Google 授权密码
 ```
 
 ## 参考
