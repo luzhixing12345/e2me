@@ -87,6 +87,14 @@ int main(int argc, char **argv) {
 }
 ```
 
+### 修改默认配置
+
+```bash
+e2me -s
+```
+
+此选项将使用当前目录的 e2me.toml 覆盖全局配置信息, 此后可以直接使用 e2me run
+
 ### 接收邮件
 
 ```bash
