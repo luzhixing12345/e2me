@@ -45,8 +45,11 @@ def main():
         print("     passwd: " + config["email"]["passwd"] + "\n")
         
         if input("Saving config file and overwriting default config file(y/n)?") == "y":
-            shutil.copyfile(config_name, default_config_path)
-            print(f"Config file saved: {config_name}")
+            try:
+                shutil.copyfile(config_name, default_config_path)
+                print(f"Config file saved: {config_name}")
+            except PermissionError:
+                print("Permission denied. Please run the script with sudo.")
         else:
             print("Config file not saved.")
 
