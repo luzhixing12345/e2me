@@ -32,9 +32,10 @@ def main():
         config_name = args.config
 
     if not os.path.exists(config_name):
-        print(f"Config file not found: {config_name}\n")
-        print("Please run 'e2me init' to create a new config file or use '-c' to specify the config file path.")
-        exit(1)
+        # print(f"Config file not found: {config_name}\n")
+        # print("Please run 'e2me init' to create a new config file or use '-c' to specify the config file path.")
+        # exit(1)
+        config_name = default_config_path
 
     config = toml.load(config_name)
 
