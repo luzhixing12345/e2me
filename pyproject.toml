@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "e2me"
-version = "0.0.6"
+version = "0.0.7"
 description = "不知道什么时候跑完程序?发一封邮件吧"
 authors = ["luzhixing12345 <luzhixing12345@163.com>"]
 license = "MIT"

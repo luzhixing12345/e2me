@@ -7,6 +7,7 @@ from email.parser import Parser
 import chardet
 from enum import Enum
 from typing import List
+import time
 
 class EmailType(Enum):
     QQ = "qq"
@@ -31,18 +32,29 @@ class EmailServer:
         
         self.emails: List[Email]  = []
         self.download_path = "e2me-download"
+        
+        self.max_timeout = 5
+        self.max_retries = 5
 
     def send(self, msg):
 
         smtp_type = smtplib.SMTP_SSL if self.smtp_ssl else smtplib.SMTP
-        try:
-            with smtp_type(self.smtp_server, self.smtp_port) as server:
-                # server.starttls()
-                server.login(self.email_addr, self.passwd)
-                server.send_message(msg)
-                print(f"Email sent successfully")
-        except Exception as e:
-            print(f"Error sending email: {e}")
+        retries = 0
+        while retries < self.max_retries:
+            try:
+                with smtp_type(self.smtp_server, self.smtp_port, timeout=self.max_timeout) as server:
+                    # server.starttls()
+                    server.login(self.email_addr, self.passwd)
+                    server.send_message(msg)
+                    server.quit()
+                    print(f"Email sent successfully")
+                    break
+            except (smtplib.SMTPException, TimeoutError) as e:
+                retries += 1
+                print(f"Error sending email: {e}. Retrying {retries}/{self.max_retries}")
+                time.sleep(1)  # 等待1秒后重试
+            except Exception as e:
+                print(f"Error sending email: {e}")
 
     def receive(self, receive_num: int):
         # 连接到 POP3 服务器
