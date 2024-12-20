@@ -61,7 +61,13 @@ lua 1.py
 e2me run
 ```
 
-对于 python 程序您可以直接使用该库发送邮件
+如果您可能同时跑多个程序, 可以使用 `--subject` 修改默认邮件主题添加更多信息
+
+```bash
+e2me run --subject "llm project finished"
+```
+
+对于 python 程序您也可以直接使用该库发送邮件
 
 ```python
 import e2me
@@ -71,20 +77,7 @@ def main():
 
     # finish
     e2me.run()
-```
-
-或者对于其他语言, 调用 execve 执行 e2me run
-
-```c
-#include <stdio.h>
-#include <unistd.h>
-int main(int argc, char **argv) {
-
-    char *args[3] = {"e2me","run", NULL};
-    // whereis e2me 找到绝对路径
-    execve("/home/kamilu/anaconda3/bin/e2me", args, NULL);
-    return 0;
-}
+    # e2me.run("llm project finsihed", "./e2me.toml")
 ```
 
 ### 修改默认配置

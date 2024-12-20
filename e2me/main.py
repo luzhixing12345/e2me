@@ -14,6 +14,7 @@ def main():
     parser.add_argument("cmd", type=str, nargs="?", help="init run get")
     parser.add_argument("-c", "--config", help="config file path")
     parser.add_argument("-s", "--save", action="store_true", help="save config file")
+    parser.add_argument("--subject", help="subject of email", type=str)
     args = parser.parse_args()
 
     default_config_path = os.path.join(os.path.dirname(__file__), CONFIG_NAME)
@@ -62,6 +63,8 @@ def main():
         return
 
     if args.cmd == "run":
+        if args.subject:
+            config["content"]["subject"] = args.subject
         send_email(config)
     elif args.cmd == "get":
         receive_email(config)
