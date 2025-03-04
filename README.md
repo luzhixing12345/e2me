@@ -35,15 +35,37 @@ body = "[<DATE> | <TIME>] [<KERNEL>] <USER>:<HOSTNAME> "
 
 > 扫描二维码发送短信失败可以手动编辑短信
 
+### 保存配置
+
+修改完 email 和 passwd 信息之后可以使用 e2me 将该信息保存到全局
+
+```bash
+e2me -s
+```
+
+此选项将使用当前目录的 e2me.toml 覆盖全局配置信息, 此后可以在所有目录下直接使用 e2me run 发送邮件
+
 ### 发送邮件
 
 ```bash
 e2me run
 ```
 
-subject 为邮件标题, body 为邮件正文内容, 默认提供了 5 个基本宏用于系统信息的记录
+配置信息中 subject 为邮件标题, body 为邮件正文内容, 默认提供了 5 个基本宏用于系统信息的记录, 您可以按照喜好修改对应的文字内容
 
-如果您同时希望将一些结果文件/日志发送, 可以启用 [file] 并填写文件位置, 它们将会被一起发送到邮箱
+```toml
+[content]
+subject = "程序运行结束"
+body = "[<DATE> | <TIME>] [<KERNEL>] <USER>:<HOSTNAME> "
+```
+
+您希望可以动态调整标题和正文内容, 可以使用 `--subject` 修改默认邮件标题, `--body` 修改默认邮件正文内容, 例如
+
+```bash
+e2me run --subject "llm project A finished" --body "epoch 1"
+```
+
+如果您同时希望将一些结果图片/文件/日志发送, 可以启用 [file] 并填写文件位置, 它们将会被一起发送到邮箱
 
 ```toml
 [file]
@@ -55,16 +77,9 @@ file_path = ["result.log"]
 ```bash
 #!/bin/bash
 python main.py
-lua 1.py
 ./myprogram
 
 e2me run
-```
-
-如果您可能同时跑多个程序, 可以使用 `--subject` 修改默认邮件主题添加更多信息
-
-```bash
-e2me run --subject "llm project finished"
 ```
 
 对于 python 程序您也可以直接使用该库发送邮件
@@ -77,16 +92,8 @@ def main():
 
     # finish
     e2me.run()
-    # e2me.run("llm project finsihed", "./e2me.toml")
+    # e2me.run("llm project finsihed", "epoch 1")
 ```
-
-### 修改默认配置
-
-```bash
-e2me -s
-```
-
-此选项将使用当前目录的 e2me.toml 覆盖全局配置信息, 此后可以直接使用 e2me run
 
 ### 接收邮件
 

@@ -12,9 +12,10 @@ CONFIG_NAME = "e2me.toml"
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("cmd", type=str, nargs="?", help="init run get")
-    parser.add_argument("-c", "--config", help="config file path")
-    parser.add_argument("-s", "--save", action="store_true", help="save config file")
-    parser.add_argument("--subject", help="subject of email", type=str)
+    parser.add_argument("-c", "--config", help="配置文件路径")
+    parser.add_argument("-s", "--save", action="store_true", help="保存配置文件(全局)")
+    parser.add_argument("--subject", help="邮件标题", type=str)
+    parser.add_argument("--body", help="邮件内容", type=str)
     args = parser.parse_args()
 
     default_config_path = os.path.join(os.path.dirname(__file__), CONFIG_NAME)
@@ -65,6 +66,8 @@ def main():
     if args.cmd == "run":
         if args.subject:
             config["content"]["subject"] = args.subject
+        if args.body:
+            config["content"]["body"] = args.body
         send_email(config)
     elif args.cmd == "get":
         receive_email(config)
