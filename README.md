@@ -1,5 +1,9 @@
 # e2me
 
+[![PyPI download month](https://img.shields.io/pypi/dm/e2me.svg)](https://pypi.python.org/pypi/e2me/)
+[![PyPI version fury.io](https://badge.fury.io/py/e2me.svg)](https://pypi.python.org/pypi/e2me/)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/e2me.svg)](https://pypi.python.org/pypi/e2me/)
+
 不知道什么时候跑完程序? 发一封邮件吧
 
 ```bash
