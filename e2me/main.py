@@ -47,7 +47,7 @@ def main():
         print("     email: " + config["email"]["email"])
         print("     passwd: " + config["email"]["passwd"] + "\n")
         
-        if input("Saving config file and overwriting default config file(y/n)?") == "y":
+        if input("Saving config file and overwriting default config file (y/N)?") == "y":
             try:
                 shutil.copyfile(config_name, default_config_path)
                 print(f"Config file saved: {config_name}")

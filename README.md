@@ -14,22 +14,26 @@ pip install e2me
 
 ## 快速开始
 
-需要在运行程序的服务器端编写一个配置文件, 可以通过 e2me init 自动生成 `e2me.toml`, 如下所示 
+初次使用需要配置文件, 通过 e2me init 自动生成 `e2me.toml`, 如下所示 
 
 ```toml
 [email]
-email = "your_email@example.com"
-passwd = "your_password"
+from = "e2me_free@163.com"
+passwd = "QQrDz7JEYREHQmKj"
 
-[content]
-subject = "程序运行结束"
-body = "[<DATE> | <TIME>] [<KERNEL>] <USER>:<HOSTNAME> "
-
-# [file]
-# file_path = ["result.log"]
+to = "your-email@example.com"
+cc = [""]
 ```
 
-其中 email 改为您的邮箱地址, **注意这里的密码并不是邮箱的登录密码**, **注意这里的密码并不是邮箱的登录密码**, **注意这里的密码并不是邮箱的登录密码**, 而是需要开启邮箱的 SMTP/POP3 服务后**分配给你的密码**
+其中 from 表示邮件发送者，默认直接使用笔者创建的一个 163 邮箱发送
+
+to 表示发送的对象，改为您的邮箱地址即可
+
+## 切换发送邮箱
+
+请注意，e2me_free@163.com 为使用公共邮箱发送，如果您有隐私数据请切换您的邮箱和对应密码，即用自己的邮箱给自己发邮件
+
+您需要修改 from 为您的邮件，修改 passwd 为邮箱的 smtp 密码，**注意这里的密码并不是邮箱的登录密码**, **注意这里的密码并不是邮箱的登录密码**, **注意这里的密码并不是邮箱的登录密码**, 而是需要开启邮箱的 SMTP/POP3 服务后**分配给你的密码**
 
 本项目目前支持 163/qq/gmail, 请请参考下述链接开启邮箱的 SMTP/POP3 服务并配置好自己的邮箱和密码
 
@@ -95,8 +99,8 @@ def main():
     # do something
 
     # finish
-    e2me.run()
-    # e2me.run("llm project finsihed", "epoch 1")
+    e2me.send_email()
+    # e2me.send_email("llm project finsihed", "epoch 1")
 ```
 
 ### 接收邮件

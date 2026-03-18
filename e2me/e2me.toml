@@ -1,7 +1,11 @@
 
 [email]
-email = "your_email@example.com"
-passwd = "your_password"
+# e2me_free 为使用公共邮箱发送，如果您有隐私数据请切换您的邮箱和对应密码
+from = "e2me_free@163.com"
+passwd = "QQrDz7JEYREHQmKj"
+
+to = "your-email@example.com"
+cc = [""]
 
 # pop3_email_num = 5  # 接收邮件数量
 

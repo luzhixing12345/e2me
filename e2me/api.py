@@ -6,7 +6,7 @@ from .send_email import send_email as _send_email
 from typing import List
 
 
-def send_email(subject_str: str = "", body_str: str = "", cc: List[str] = None, config_path: str = "e2me.toml"):
+def send_email(subject: str = "", body: str = "", cc: List[str] = None, to: str = None, config_path: str = "e2me.toml"):
     '''
     Send an email with the specified subject, body, and recipients.
     
@@ -20,12 +20,14 @@ def send_email(subject_str: str = "", body_str: str = "", cc: List[str] = None, 
         config_path = default_config_path
 
     config = toml.load(config_path)
-    if subject_str != "":
-        config["content"]["subject"] = subject_str
-    if body_str != "":
-        config["content"]["body"] = body_str
+    if subject != "":
+        config["content"]["subject"] = subject
+    if body != "":
+        config["content"]["body"] = body
     if cc:
         config["content"]["cc"] = cc
+    if to:
+        config["email"]["to"] = to
     _send_email(config)
 
 

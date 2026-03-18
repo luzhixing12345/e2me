@@ -31,14 +31,18 @@ def parse_content(text: str):
 # 邮件发送函数
 def send_email(config: Dict):
     # 发送者和接收者邮箱信息
-    email_addr = config["email"]["email"]
+    email_addr = config["email"]["from"]
     passwd = config["email"]["passwd"]
     email_server: EmailServer = get_email_server(email_addr, passwd)
 
     # 创建邮件对象
+    if config['email']['to'] is None or config['email']['to'] == "your-email@example.com":
+        print("To email address is not specified.")
+        return False
+    
     msg = MIMEMultipart()
     msg["From"] = email_addr
-    msg["To"] = email_addr
+    msg["To"] = config["email"]["to"]
     msg["Subject"] = parse_content(config["content"]["subject"])
     cc = config["content"].get("cc", [])
     if isinstance(cc, str):
