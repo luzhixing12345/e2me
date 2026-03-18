@@ -1,17 +1,32 @@
+import os
 
 import toml
-import os
-from .send_email import send_email
+
+from .send_email import send_email as _send_email
+from typing import List
 
 
-def run(subject_str: str = "", body_str: str = "", config_path: str = "e2me.toml"):
-    if not os.path.exists(config_path):
-        print(f"Config file not found: {config_path}\n")
-        return
+def send_email(subject_str: str = "", body_str: str = "", cc: List[str] = None, config_path: str = "e2me.toml"):
+    '''
+    Send an email with the specified subject, body, and recipients.
     
+    Args:
+        subject_str: The subject of the email.
+        body_str: The body of the email.
+        cc: A list of email addresses to be added as CC recipients. ["<EMAIL1>", "<EMAIL2>"]
+    '''
+    default_config_path = os.path.join(os.path.dirname(__file__), "e2me.toml")
+    if not os.path.exists(config_path):
+        config_path = default_config_path
+
     config = toml.load(config_path)
     if subject_str != "":
         config["content"]["subject"] = subject_str
     if body_str != "":
         config["content"]["body"] = body_str
-    send_email(config)
+    if cc:
+        config["content"]["cc"] = cc
+    _send_email(config)
+
+
+run = send_email

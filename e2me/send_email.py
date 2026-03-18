@@ -40,6 +40,11 @@ def send_email(config: Dict):
     msg["From"] = email_addr
     msg["To"] = email_addr
     msg["Subject"] = parse_content(config["content"]["subject"])
+    cc = config["content"].get("cc", [])
+    if isinstance(cc, str):
+        cc = [cc] if cc else []
+    if cc:
+        msg["Cc"] = ", ".join(cc)
 
     # 添加邮件正文
     body = parse_content(config["content"]["body"])

@@ -3,8 +3,7 @@ import smtplib
 import poplib
 
 from .pop3 import *
-from email.parser import Parser
-import chardet
+from email.parser import BytesParser
 from enum import Enum
 from typing import List
 import time
@@ -77,20 +76,8 @@ class EmailServer:
                 if cnt > receive_num:
                     break
                 resp, lines, octets = pop3_server.retr(i)
-                # msg_content = b"\r\n".join(lines).decode("utf-8")
                 msg_content = b"\r\n".join(lines)
-                detected_encoding = chardet.detect(msg_content)["encoding"]
-                encodings = [detected_encoding, "utf-8", "iso-8859-1", "windows-1252"]
-                for encoding in encodings:
-                    try:
-                        msg_content_decoded = msg_content.decode(encoding, errors="ignore")
-                        break  # 成功解码后退出循环
-                    except Exception as e:
-                        print(f"尝试使用编码 {encoding} 解码失败: {e}")
-                else:
-                    print(f"所有编码尝试失败,邮件索引: {i}")
-                    continue
-                msg = Parser().parsestr(msg_content_decoded)
+                msg = BytesParser().parsebytes(msg_content)
                 try:
                     # 解析邮件具体内容,包括正文,标题,和附件
                     email = parser_content(msg, 0)

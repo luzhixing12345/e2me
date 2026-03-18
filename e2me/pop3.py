@@ -5,7 +5,6 @@ import re
 import email
 from email.header import decode_header
 from email.utils import parseaddr
-import arrow
 
 class Email:
 
@@ -196,7 +195,7 @@ def parse_mail_time(msg: email.message.EmailMessage, email: Email) -> datetime:
     for ft in formats:
         try:
             mail_datetime_obj = datetime.strptime(mail_datetime, ft)
-            max_mail_time_str = arrow.get(mail_datetime_obj).format("YYYY-MM-DD HH:mm")
+            max_mail_time_str = mail_datetime_obj.strftime("%Y-%m-%d %H:%M")
             # print("邮件接收时间为:" + max_mail_time_str)
             email.date = max_mail_time_str
             return
