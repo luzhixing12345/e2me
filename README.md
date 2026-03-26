@@ -18,22 +18,19 @@ pip install e2me
 
 ```toml
 [email]
-from = "e2me_free@163.com"
-passwd = "QQrDz7JEYREHQmKj"
+email = "your-email@example.com"
+passwd = "xxx"
 
-to = "your-email@example.com"
 cc = [""]
 ```
 
-其中 from 表示邮件发送者，默认直接使用笔者创建的一个 163 邮箱发送
+email 改为您的邮箱地址即可，密码为邮箱的 SMTP 密码
 
-to 表示发送的对象，改为您的邮箱地址即可
+> 如果需要可以填写 cc 抄送对象
 
-## 切换发送邮箱
+### 获取 SMTP 密码
 
-请注意，e2me_free@163.com 为使用公共邮箱发送，如果您有隐私数据请切换您的邮箱和对应密码，即用自己的邮箱给自己发邮件
-
-您需要修改 from 为您的邮件，修改 passwd 为邮箱的 smtp 密码，**注意这里的密码并不是邮箱的登录密码**, **注意这里的密码并不是邮箱的登录密码**, **注意这里的密码并不是邮箱的登录密码**, 而是需要开启邮箱的 SMTP/POP3 服务后**分配给你的密码**
+**注意这里的密码并不是邮箱的登录密码**, **注意这里的密码并不是邮箱的登录密码**, **注意这里的密码并不是邮箱的登录密码**, 而是需要开启邮箱的 SMTP/POP3 服务后**分配给你的密码**
 
 本项目目前支持 163/qq/gmail, 请请参考下述链接开启邮箱的 SMTP/POP3 服务并配置好自己的邮箱和密码
 
@@ -45,13 +42,13 @@ to 表示发送的对象，改为您的邮箱地址即可
 
 ### 保存配置
 
-修改完 email 和 passwd 信息之后可以使用 e2me 将该信息保存到全局
+修改完 email 和 passwd 信息之后可以将该信息保存到全局
 
 ```bash
 e2me -s
 ```
 
-此选项将使用当前目录的 e2me.toml 覆盖全局配置信息, 此后可以在所有目录下直接使用 e2me run 发送邮件
+此选项将使用当前目录的 e2me.toml 覆盖全局配置信息, 此后可以在所有目录下直接使用 `e2me run` 发送邮件
 
 ### 发送邮件
 
@@ -90,24 +87,43 @@ python main.py
 e2me run
 ```
 
-对于 python 程序您也可以直接使用该库发送邮件
+### Python API
+
+如果您想在程序中发送邮件也非常方便
 
 ```python
 import e2me
+e2me.send_email()
+e2me.send_email(subject = "hello", body = "world")
+```
 
-def main():
-    # do something
+### 环境变量
 
-    # finish
-    e2me.send_email()
-    # e2me.send_email("llm project finsihed", "epoch 1")
+在一些特殊情况下可能不想要生成 e2me.toml 配置，您也可以设置环境变量 `E2ME_EMAIL` 和 `E2ME_PASSWD` 来验证身份
+
+```bash
+export E2ME_EMAIL=abc@163.com
+export E2ME_PASSWD=xxx
 ```
 
 ### 接收邮件
 
 ```bash
-e2me get
+$ e2me get
+create WANGYI163 email server for [luzhixing12345@163.com]...
+获取最近 5 封邮件
+[0]: [2026-03-26 21:53] 程序运行结束 [luzhixing12345@163.com]
+[1]: [2026-03-26 21:26] 程序运行结束 [luzhixing12345@163.com]
+[2]: [2026-03-26 08:00] Paper Notifier: HPCA [2026] 0 Papers [e2me_free@163.com]
+[3]: [2026-03-25 19:33] Important Update to GitHub Copilot Interaction Data Usage Policy [no-reply@github.com]
+[4]: [2026-03-24 13:17] Overleaf thoughts [welcome@overleaf.com]
 ```
+
+### Q&A
+
+- 为什么是自己给自己发送邮件？
+  
+  理论上来说只需要注册一个公共邮箱账号负责发送，并硬编码该邮箱的smtp密钥，然后给自己的邮箱发送邮件即可。但是这种方式很容易被各大邮箱和谐，ip登录不统一等等问题，作为一个公共库这种做法会有很大问题
 
 ## 邮箱基本信息
 

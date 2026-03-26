@@ -6,7 +6,7 @@ from .send_email import send_email as _send_email
 from typing import List
 
 
-def send_email(subject: str = "", body: str = "", cc: List[str] = None, to: str = None, config_path: str = "e2me.toml"):
+def send_email(subject: str = "", body: str = "", cc: List[str] = None, config_path: str = "e2me.toml"):
     '''
     Send an email with the specified subject, body, and recipients.
     
@@ -26,9 +26,4 @@ def send_email(subject: str = "", body: str = "", cc: List[str] = None, to: str 
         config["content"]["body"] = body
     if cc:
         config["content"]["cc"] = cc
-    if to:
-        config["email"]["to"] = to
     _send_email(config)
-
-
-run = send_email

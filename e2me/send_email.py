@@ -30,19 +30,23 @@ def parse_content(text: str):
 
 # 邮件发送函数
 def send_email(config: Dict):
-    # 发送者和接收者邮箱信息
-    email_addr = config["email"]["from"]
+    
+    # check if has env variable $E2ME_EMAIL and $E2ME_PASSWD
+    if os.getenv("E2ME_EMAIL") and os.getenv("E2ME_PASSWD"):
+        config["email"]["email"] = os.getenv("E2ME_EMAIL")
+        config["email"]["passwd"] = os.getenv("E2ME_PASSWD")
+
+    email_addr = config["email"]["email"]
+    if email_addr is None or email_addr == "your-email@example.com":
+        print("Your email address is not specified, please run `\033[1;32me2me init\033[0m` and update the config file with your email address.")
+        return False
+
     passwd = config["email"]["passwd"]
     email_server: EmailServer = get_email_server(email_addr, passwd)
 
-    # 创建邮件对象
-    if config['email']['to'] is None or config['email']['to'] == "your-email@example.com":
-        print("To email address is not specified.")
-        return False
-    
     msg = MIMEMultipart()
     msg["From"] = email_addr
-    msg["To"] = config["email"]["to"]
+    msg["To"] = email_addr
     msg["Subject"] = parse_content(config["content"]["subject"])
     cc = config["content"].get("cc", [])
     if isinstance(cc, str):
