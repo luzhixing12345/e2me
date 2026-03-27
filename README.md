@@ -106,6 +106,12 @@ export E2ME_EMAIL=abc@163.com
 export E2ME_PASSWD=xxx
 ```
 
+以及配置 E2ME_CC 来添加抄送者
+
+```bash
+export E2ME_CC="abc@163.com,xxx@qq.com"
+```
+
 ### 接收邮件
 
 ```bash

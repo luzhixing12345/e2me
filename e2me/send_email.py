@@ -32,9 +32,12 @@ def parse_content(text: str):
 def send_email(config: Dict):
     
     # check if has env variable $E2ME_EMAIL and $E2ME_PASSWD
-    if os.getenv("E2ME_EMAIL") and os.getenv("E2ME_PASSWD"):
+    if os.getenv("E2ME_EMAIL"):
         config["email"]["email"] = os.getenv("E2ME_EMAIL")
+    if os.getenv("E2ME_PASSWD"):
         config["email"]["passwd"] = os.getenv("E2ME_PASSWD")
+    if os.getenv("E2ME_CC"):
+        config["email"]["cc"] = os.getenv("E2ME_CC").split(",")
 
     email_addr = config["email"]["email"]
     if email_addr is None or email_addr == "your-email@example.com":
@@ -47,12 +50,14 @@ def send_email(config: Dict):
     msg = MIMEMultipart()
     msg["From"] = email_addr
     msg["To"] = email_addr
-    msg["Subject"] = parse_content(config["content"]["subject"])
-    cc = config["content"].get("cc", [])
+    cc = config["email"].get("cc", [])
     if isinstance(cc, str):
         cc = [cc] if cc else []
     if cc:
         msg["Cc"] = ", ".join(cc)
+        print("CC:", cc)
+    
+    msg["Subject"] = parse_content(config["content"]["subject"])
 
     # 添加邮件正文
     body = parse_content(config["content"]["body"])
