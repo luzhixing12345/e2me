@@ -28,6 +28,18 @@ email 改为您的邮箱地址即可，密码为邮箱的 SMTP 密码
 
 > 如果需要可以填写 cc 抄送对象
 
+默认会把邮件发送给 `email` 中的登录邮箱。如果只想发送给抄送对象、不发送给登录邮箱，可以设置：
+
+```toml
+[email]
+email = "your-email@example.com"
+passwd = "xxx"
+to = []
+cc = ["friend@example.com"]
+```
+
+`to` 也可以填写其他主收件人地址；`to` 和 `cc` 至少需要有一个收件人。
+
 ### 获取 SMTP 密码
 
 **注意这里的密码并不是邮箱的登录密码**, **注意这里的密码并不是邮箱的登录密码**, **注意这里的密码并不是邮箱的登录密码**, 而是需要开启邮箱的 SMTP/POP3 服务后**分配给你的密码**
@@ -95,6 +107,7 @@ e2me run
 import e2me
 e2me.send_email()
 e2me.send_email(subject = "hello", body = "world")
+e2me.send_email(subject = "hello", body = "world", to = [], cc = ["friend@example.com"])
 ```
 
 ### 环境变量
@@ -110,6 +123,13 @@ export E2ME_PASSWD=xxx
 
 ```bash
 export E2ME_CC="abc@163.com,xxx@qq.com"
+```
+
+设置 `E2ME_TO` 可覆盖主收件人；设为空字符串时只发送给 `E2ME_CC`（或配置文件中的 `cc`）：
+
+```bash
+export E2ME_TO=""
+export E2ME_CC="friend@example.com"
 ```
 
 ### 接收邮件

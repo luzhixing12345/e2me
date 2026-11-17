@@ -8,14 +8,16 @@ from .send_email import send_email as _send_email
 from typing import List, Optional
 
 
-def send_email(subject: str = "", body: str = "", cc: List[str] = None, config_path: str = "e2me.toml"):
+def send_email(subject: str = "", body: str = "", cc: List[str] = None, config_path: str = "e2me.toml", to: Optional[List[str]] = None):
     '''
     Send an email with the specified subject, body, and recipients.
     
     Args:
-        subject_str: The subject of the email.
-        body_str: The body of the email.
+        subject: The subject of the email.
+        body: The body of the email.
         cc: A list of email addresses to be added as CC recipients. ["<EMAIL1>", "<EMAIL2>"]
+        config_path: Path to the configuration file.
+        to: Primary recipients. Use [] to send only to CC recipients.
     '''
     default_config_path = os.path.join(os.path.dirname(__file__), "e2me.toml")
     if not os.path.exists(config_path):
@@ -26,8 +28,10 @@ def send_email(subject: str = "", body: str = "", cc: List[str] = None, config_p
         config["content"]["subject"] = subject
     if body != "":
         config["content"]["body"] = body
-    if cc:
-        config["content"]["cc"] = cc
+    if cc is not None:
+        config["email"]["cc"] = cc
+    if to is not None:
+        config["email"]["to"] = to
     _send_email(config)
 
 

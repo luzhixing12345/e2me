@@ -38,6 +38,8 @@ def send_email(config: Dict):
         config["email"]["passwd"] = os.getenv("E2ME_PASSWD")
     if os.getenv("E2ME_CC"):
         config["email"]["cc"] = os.getenv("E2ME_CC").split(",")
+    if "E2ME_TO" in os.environ:
+        config["email"]["to"] = os.environ["E2ME_TO"].split(",")
 
     email_addr = config["email"]["email"]
     if email_addr is None or email_addr == "your-email@example.com":
@@ -49,13 +51,22 @@ def send_email(config: Dict):
 
     msg = MIMEMultipart()
     msg["From"] = email_addr
-    msg["To"] = email_addr
+    to = config["email"].get("to", [email_addr])
+    if isinstance(to, str):
+        to = [to]
+    to = [address.strip() for address in to if address.strip()]
+    if to:
+        msg["To"] = ", ".join(to)
     cc = config["email"].get("cc", [])
     if isinstance(cc, str):
         cc = [cc] if cc else []
+    cc = [address.strip() for address in cc if address.strip()]
     if cc:
         msg["Cc"] = ", ".join(cc)
         print("CC:", cc)
+    if not to and not cc:
+        print("No recipients specified. Set email.to or email.cc.")
+        return False
     
     msg["Subject"] = parse_content(config["content"]["subject"])
 
